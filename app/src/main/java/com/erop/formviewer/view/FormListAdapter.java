@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.erop.formviewer.R;
 import com.erop.formviewer.databinding.ItemFormBinding;
@@ -34,22 +35,41 @@ public class FormListAdapter extends RecyclerView.Adapter<FormListAdapter.MyView
 
         public ItemFormBinding itemFormBinding;
 
-        public MyViewHolder(View view) {
-            super(view);
+        public MyViewHolder(ItemFormBinding view) {
+            super(view.getRoot());
             if (itemFormBinding == null)
-                itemFormBinding = DataBindingUtil.bind(itemView);
+//                this.itemFormBinding = DataBindingUtil.bind(itemView);
+                this.itemFormBinding = view;
         }
     }
 
 
     @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        /*ItemFormBinding itemFormBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.item_form, parent, false);
-        return new MyViewHolder(itemFormBinding);*/
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_form,
+    public MyViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View itemView = layoutInflater.inflate(R.layout.item_form,parent, false);
+        final ItemFormBinding itemFormBinding = DataBindingUtil.inflate(layoutInflater, R.layout.item_form, parent, false);
+
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(parent.getContext(),"this"+itemFormBinding.getViewmodel().getIdString(),Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        return new MyViewHolder(itemFormBinding);
+       /* final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_form,
                 new FrameLayout(parent.getContext()), false);
-        return new MyViewHolder(itemView);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(parent.getContext(),"this"+formList.get(v.getId()),Toast.LENGTH_LONG).show();
+
+            }
+        });
+        return new MyViewHolder(itemView);*/
     }
 
     @Override

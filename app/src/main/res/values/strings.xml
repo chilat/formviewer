@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Form Viewer</string>
+    <string name="id">ID: %s</string>
 </resources>

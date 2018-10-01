@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.erop.formviewer.R;
@@ -33,6 +34,8 @@ Context context;
         DataBindingUtil.setDefaultComponent(new AppDataBindingComponent());
         view = bind();
         initRecyclerView(view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Form Viewer");
     }
 
     @Override
