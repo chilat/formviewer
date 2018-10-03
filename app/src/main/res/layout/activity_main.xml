@@ -67,6 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="8"
+                android:padding="7dp"
                 android:foreground="?attr/selectableItemBackground"
                 android:onClick="@{viewmodel::getFormList}"
                 android:src="@drawable/ic_search_white_24dp" />
