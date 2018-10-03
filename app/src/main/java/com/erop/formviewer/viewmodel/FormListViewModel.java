@@ -15,6 +15,7 @@ import com.erop.formviewer.BR;
 import com.erop.formviewer.R;
 import com.erop.formviewer.model.FormListModel;
 import com.erop.formviewer.util.APIClient;
+import com.erop.formviewer.util.Utils;
 import com.erop.formviewer.view.FormListAdapter;
 
 import java.util.ArrayList;
@@ -152,9 +153,19 @@ public class FormListViewModel extends BaseObservable {
     }
 
     public void getFormList(final View view) {
+        this.context = view.getContext();
+        if (!Utils.isConnected(context)){
+            new MaterialDialog.Builder(context)
+                    .content(context.getResources().getString(R.string.no_internet))
+                    .positiveText(context.getResources().getString(R.string.btn_ok))
+                    .cancelable(false)
+                    .show();
+            return;
+        }
+
         formList = new ArrayList<>();
         final MaterialDialog dialog = new MaterialDialog.Builder(view.getContext())
-                .content("Loading...")
+                .content(context.getResources().getString(R.string.loading))
                 .cancelable(false)
                 .progress(true, 0)
                 .show();
@@ -164,7 +175,7 @@ public class FormListViewModel extends BaseObservable {
             public void onSuccess(List<FormListModel> list) {
                 dialog.dismiss();
                 setListVisible(list.size()>0);
-                setMessage(view.getContext().getResources().getString(R.string.no_records) +" "+getOwner());
+                setMessage(context.getResources().getString(R.string.no_records) +" "+getOwner());
                 setFormList(list);
                 notifyPropertyChanged(BR.formList);
             }
@@ -172,12 +183,21 @@ public class FormListViewModel extends BaseObservable {
             @Override
             public void onError(String message) {
                 dialog.dismiss();
-
+                new MaterialDialog.Builder(context)
+                        .content(message)
+                        .positiveText(context.getResources().getString(R.string.btn_ok))
+                        .cancelable(false)
+                        .show();
             }
 
             @Override
             public void onFailure(Exception e) {
                 dialog.dismiss();
+                new MaterialDialog.Builder(context)
+                        .content(context.getResources().getString(R.string.error_text))
+                        .positiveText(context.getResources().getString(R.string.btn_ok))
+                        .cancelable(false)
+                        .show();
 
             }
         });
