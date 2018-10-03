@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
             name="viewmodel"
             type="com.erop.formviewer.viewmodel.FormListViewModel" />
@@ -28,18 +26,6 @@
                 app:layout_scrollFlags="scroll|enterAlways" />
         </android.support.design.widget.AppBarLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
-            android:paddingBottom="7dp"
-            android:paddingTop="7dp"
-            android:textSize="14sp"
-            android:text="@string/helper_text"
-            android:textAlignment="center"
-            android:padding="7dp"
-            android:textColor="@color/colorAccentLight" />
-
         <LinearLayout
             android:id="@+id/searchLayout"
             android:layout_width="match_parent"
@@ -52,7 +38,6 @@
                 android:id="@+id/txtSearhText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
                 android:layout_weight="1"
                 android:background="@drawable/bg_search_box"
                 android:hint="@string/hint_search"
@@ -100,21 +85,10 @@
             android:id="@+id/rvFormList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.isListVisible ? View.VISIBLE : View.GONE}"
             app:formList="@{viewmodel.formList}"
             app:formListAdapter="@{viewmodel.formListAdapter}">
+
         </android.support.v7.widget.RecyclerView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="@{viewmodel.message}"
-            android:visibility="@{viewmodel.isListVisible ? View.GONE : View.VISIBLE}"
-
-            />
-
     </LinearLayout>
 
 </layout>

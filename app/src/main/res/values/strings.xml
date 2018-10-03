@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Form Viewer</string>
     <string name="id">ID: %s</string>
+    <string name="hint_search">Search by owner e.g. ona</string>
+    <string name="helper_text">Enter a form owner below to view their public forms e.g. erop</string>
+    <string name="no_records">No Records found for </string>
 </resources>

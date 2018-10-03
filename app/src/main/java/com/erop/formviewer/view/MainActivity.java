@@ -13,7 +13,6 @@ import android.view.View;
 import com.erop.formviewer.R;
 import com.erop.formviewer.databinding.ActivityMainBinding;
 import com.erop.formviewer.databinding.AppDataBindingComponent;
-import com.erop.formviewer.model.FormListModel;
 import com.erop.formviewer.viewmodel.FormListViewModel;
 
 import static android.widget.LinearLayout.VERTICAL;
@@ -23,11 +22,6 @@ ActivityMainBinding activityMainBinding;
 FormListViewModel formListViewModel;
 Context context;
     View view;
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +29,8 @@ Context context;
         view = bind();
         initRecyclerView(view);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Form Viewer");
+        toolbar.setTitle(getResources().getString(R.string.app_name));
+        formListViewModel.setUp(view);
     }
 
     @Override
@@ -45,7 +40,7 @@ Context context;
     }
     private View bind() {
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        formListViewModel = new FormListViewModel(this);
+        formListViewModel = new FormListViewModel();
         activityMainBinding.setViewmodel(formListViewModel);
         return activityMainBinding.getRoot();
     }
@@ -56,9 +51,4 @@ Context context;
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), VERTICAL));
     }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
-    public native String stringFromJNI();
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
+import okhttp3.internal.Util;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,23 +43,25 @@ public class APIClient {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.ona.io/api/v1/")
+                .baseUrl(NativeTasks.getUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build();
         return retrofit;
     }
+
     public interface onGetFormList {
         void onSuccess(List<FormListModel> list);
+
         void onError(String message);
+
         void onFailure(Exception e);
     }
 
     public void getFormList(String owner, final onGetFormList onResult) {
-        Log.d("Requesting..","rerre");
         List<FormListModel> list = new ArrayList<>();
         APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
-        Call<List<FormListModel>> call = apiInterface.getFormList();
+        Call<List<FormListModel>> call = owner == null ? apiInterface.getFormList("erop") : apiInterface.getFormList(owner);
         call.enqueue(new Callback<List<FormListModel>>() {
             @Override
             public void onResponse(Call<List<FormListModel>> call, retrofit2.Response<List<FormListModel>> response) {

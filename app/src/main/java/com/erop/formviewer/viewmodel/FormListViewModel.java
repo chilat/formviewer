@@ -1,13 +1,18 @@
 package com.erop.formviewer.viewmodel;
 
+import android.app.Activity;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.erop.formviewer.BR;
+import com.erop.formviewer.R;
 import com.erop.formviewer.model.FormListModel;
 import com.erop.formviewer.util.APIClient;
 import com.erop.formviewer.view.FormListAdapter;
@@ -24,23 +29,28 @@ public class FormListViewModel extends BaseObservable {
     private String title;
     private String description;
     private String url;
-    FormListModel formListModel;
-    FormListAdapter formListAdapter;
-    List<FormListModel> formList;
+    private FormListModel formListModel;
+    private FormListAdapter formListAdapter;
+    private List<FormListModel> formList;
+    private Context context;
+    private String owner;
+    private String message;
+    boolean listVisible;
 
-    public FormListViewModel(Context context) {
+    public FormListViewModel() {
         formList = new ArrayList<>();
-        getFormList();
         formListAdapter = new FormListAdapter(formList, context);
     }
 
     public FormListViewModel(FormListModel formListModel) {
         this.formListModel = formListModel;
     }
-    public void setUp() {
+
+    public void setUp(View view) {
         // perform set up tasks, such as adding listeners, data population, etc.
-        getFormList(null);
+        getFormList(view);
     }
+
     @Bindable
     public List<FormListModel> getFormList() {
         return formList;
@@ -112,39 +122,66 @@ public class FormListViewModel extends BaseObservable {
 //        notifyPropertyChanged(BR.url);
     }
 
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-//        setMessage(s.toString());
+    @Bindable
+    public boolean isListVisible() {
+        return listVisible;
     }
 
-    public void getFormList(View view) {
+    public void setListVisible(boolean listVisible) {
+        this.listVisible = listVisible;
+        notifyPropertyChanged(BR.listVisible);
+    }
+
+    @Bindable
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+        notifyPropertyChanged(BR.message);
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+//        setMessage(s.toString());
+        owner = s.toString();
+    }
+
+    public void getFormList(final View view) {
         formList = new ArrayList<>();
-APIClient apiClient = new APIClient();
-        apiClient.getFormList("erop", new APIClient.onGetFormList() {
+        final MaterialDialog dialog = new MaterialDialog.Builder(view.getContext())
+                .content("Loading...")
+                .cancelable(false)
+                .progress(true, 0)
+                .show();
+        APIClient apiClient = new APIClient();
+        apiClient.getFormList(owner, new APIClient.onGetFormList() {
             @Override
             public void onSuccess(List<FormListModel> list) {
+                dialog.dismiss();
+                setListVisible(list.size()>0);
+                setMessage(view.getContext().getResources().getString(R.string.no_records) +" "+getOwner());
                 setFormList(list);
                 notifyPropertyChanged(BR.formList);
             }
 
             @Override
             public void onError(String message) {
+                dialog.dismiss();
 
             }
 
             @Override
             public void onFailure(Exception e) {
+                dialog.dismiss();
 
             }
         });
 
-    /*    for (int i = 0; i <= 10; i++) {
-            formListModel = new FormListModel();
-            formListModel.setTitle("Title " + i);
-            formListModel.setDescription("Desc " + i);
-            formListModel.setId(i);
-            formListModel.setIdString("Id String " + i);
-            formList.add(formListModel);
-        }*/
         notifyPropertyChanged(BR.formList);
 
     }
