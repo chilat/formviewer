@@ -16,7 +16,7 @@ import com.erop.formviewer.databinding.AppDataBindingComponent;
 import com.erop.formviewer.viewmodel.FormListViewModel;
 
 import static android.widget.LinearLayout.VERTICAL;
-
+// Main entry class
 public class MainActivity extends AppCompatActivity {
 ActivityMainBinding activityMainBinding;
 FormListViewModel formListViewModel;
