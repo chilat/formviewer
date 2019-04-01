@@ -26,7 +26,7 @@ Context context;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DataBindingUtil.setDefaultComponent(new AppDataBindingComponent());
-//        view = bind();
+        view = bind();
         initRecyclerView(view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
@@ -38,7 +38,7 @@ Context context;
         super.onResume();
 //        formListViewModel.setUp();
     }
-    private View bind() {
+    private View bin_d() {
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         formListViewModel = new FormListViewModel();
         activityMainBinding.setViewmodel(formListViewModel);
