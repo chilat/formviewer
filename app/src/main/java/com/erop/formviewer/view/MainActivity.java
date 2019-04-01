@@ -30,7 +30,7 @@ Context context;
         initRecyclerView(view);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
-        formListViewModel.setUp(view);
+//        formListViewModel.setUp(view);
     }
 
     @Override
